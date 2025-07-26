@@ -40,6 +40,10 @@ withdrawals_collection = db.withdrawals
 class ClickData(BaseModel):
     content_id: str
 
+class VideoWatchData(BaseModel):
+    video_id: str
+    watch_duration: int  # in seconds
+
 class WithdrawRequest(BaseModel):
     amount: float
     paypal_email: str
