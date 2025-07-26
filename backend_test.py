@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-ClickEarn Pro Backend Testing Suite
-Tests all backend API endpoints and functionality
+ClickEarn Pro Backend Testing Suite - UPDATED
+Tests all backend API endpoints including new authentication and video features
 """
 
 import requests
@@ -9,6 +9,7 @@ import json
 import uuid
 from datetime import datetime
 import time
+import random
 
 # Get backend URL from environment
 BACKEND_URL = "https://4a449881-6c43-4bd7-8c4f-4fca0744b668.preview.emergentagent.com"
@@ -19,6 +20,9 @@ class ClickEarnTester:
         self.session_id = None
         self.user_data = None
         self.test_results = []
+        self.test_user_email = f"testuser_{random.randint(1000,9999)}@example.com"
+        self.test_user_phone = f"+1555{random.randint(1000000,9999999)}"
+        self.test_password = "TestPassword123!"
         
     def log_test(self, test_name, success, message, details=None):
         """Log test results"""
