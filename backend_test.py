@@ -39,7 +39,329 @@ class ClickEarnTester:
         if details:
             print(f"   Details: {details}")
     
-    def test_health_check(self):
+    def test_user_registration_email(self):
+        """Test user registration with email"""
+        try:
+            register_data = {
+                "name": "Test User Email",
+                "email": self.test_user_email,
+                "password": self.test_password
+            }
+            
+            response = requests.post(f"{API_BASE}/auth/register", json=register_data, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success") and "session_id" in data and "user" in data:
+                    self.session_id = data["session_id"]
+                    self.user_data = data["user"]
+                    self.log_test("User Registration (Email)", True, f"Successfully registered user with email: {self.test_user_email}")
+                    return True
+                else:
+                    self.log_test("User Registration (Email)", False, f"Invalid response structure: {data}")
+                    return False
+            else:
+                self.log_test("User Registration (Email)", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("User Registration (Email)", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_user_registration_phone(self):
+        """Test user registration with phone"""
+        try:
+            register_data = {
+                "name": "Test User Phone",
+                "phone": self.test_user_phone,
+                "password": self.test_password
+            }
+            
+            response = requests.post(f"{API_BASE}/auth/register", json=register_data, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success") and "session_id" in data and "user" in data:
+                    self.log_test("User Registration (Phone)", True, f"Successfully registered user with phone: {self.test_user_phone}")
+                    return True
+                else:
+                    self.log_test("User Registration (Phone)", False, f"Invalid response structure: {data}")
+                    return False
+            else:
+                self.log_test("User Registration (Phone)", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("User Registration (Phone)", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_user_login_email(self):
+        """Test user login with email"""
+        try:
+            login_data = {
+                "email": self.test_user_email,
+                "password": self.test_password
+            }
+            
+            response = requests.post(f"{API_BASE}/auth/login", json=login_data, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success") and "session_id" in data and "user" in data:
+                    self.session_id = data["session_id"]
+                    self.user_data = data["user"]
+                    self.log_test("User Login (Email)", True, f"Successfully logged in with email: {self.test_user_email}")
+                    return True
+                else:
+                    self.log_test("User Login (Email)", False, f"Invalid response structure: {data}")
+                    return False
+            else:
+                self.log_test("User Login (Email)", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("User Login (Email)", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_user_login_phone(self):
+        """Test user login with phone"""
+        try:
+            login_data = {
+                "phone": self.test_user_phone,
+                "password": self.test_password
+            }
+            
+            response = requests.post(f"{API_BASE}/auth/login", json=login_data, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success") and "session_id" in data and "user" in data:
+                    self.log_test("User Login (Phone)", True, f"Successfully logged in with phone: {self.test_user_phone}")
+                    return True
+                else:
+                    self.log_test("User Login (Phone)", False, f"Invalid response structure: {data}")
+                    return False
+            else:
+                self.log_test("User Login (Phone)", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("User Login (Phone)", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_sms_code_system(self):
+        """Test SMS verification code system"""
+        try:
+            # Test sending code
+            send_data = {"phone": self.test_user_phone}
+            response = requests.post(f"{API_BASE}/auth/send-code", json=send_data, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success") and "demo_code" in data:
+                    demo_code = data["demo_code"]
+                    self.log_test("SMS Send Code", True, f"Successfully sent verification code: {demo_code}")
+                    
+                    # Test verifying code
+                    verify_data = {"phone": self.test_user_phone, "code": demo_code}
+                    verify_response = requests.post(f"{API_BASE}/auth/verify-code", json=verify_data, timeout=10)
+                    
+                    if verify_response.status_code == 200:
+                        verify_result = verify_response.json()
+                        if verify_result.get("success"):
+                            self.log_test("SMS Verify Code", True, "Successfully verified SMS code")
+                            return True
+                        else:
+                            self.log_test("SMS Verify Code", False, f"Code verification failed: {verify_result}")
+                            return False
+                    else:
+                        self.log_test("SMS Verify Code", False, f"HTTP {verify_response.status_code}: {verify_response.text}")
+                        return False
+                else:
+                    self.log_test("SMS Send Code", False, f"Invalid response structure: {data}")
+                    return False
+            else:
+                self.log_test("SMS Send Code", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("SMS Code System", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_videos_api(self):
+        """Test videos API (public endpoint)"""
+        try:
+            response = requests.get(f"{API_BASE}/videos", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "videos" in data and isinstance(data["videos"], list):
+                    videos_count = len(data["videos"])
+                    if videos_count > 0:
+                        # Check video structure
+                        first_video = data["videos"][0]
+                        required_fields = ["id", "title", "duration", "thumbnail", "earnings", "description"]
+                        missing_fields = [field for field in required_fields if field not in first_video]
+                        
+                        if not missing_fields:
+                            self.log_test("Videos API", True, f"Retrieved {videos_count} videos with correct structure")
+                            return True
+                        else:
+                            self.log_test("Videos API", False, f"Missing fields in video: {missing_fields}")
+                            return False
+                    else:
+                        self.log_test("Videos API", False, "No videos returned")
+                        return False
+                else:
+                    self.log_test("Videos API", False, f"Invalid response structure: {data}")
+                    return False
+            else:
+                self.log_test("Videos API", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("Videos API", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_dashboard_with_videos(self):
+        """Test dashboard with video statistics"""
+        if not self.session_id:
+            self.log_test("Dashboard with Videos", False, "No session available for testing")
+            return False
+        
+        try:
+            headers = {"X-Session-ID": self.session_id}
+            response = requests.get(f"{API_BASE}/dashboard", headers=headers, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                required_fields = ["user", "balance", "total_earned", "clicks_today", "videos_today", 
+                                 "clicks_remaining", "videos_remaining", "today_earnings"]
+                missing_fields = [field for field in required_fields if field not in data]
+                
+                if not missing_fields:
+                    self.log_test("Dashboard with Videos", True, 
+                                f"Dashboard includes video stats - Videos today: {data['videos_today']}, Videos remaining: {data['videos_remaining']}")
+                    return True
+                else:
+                    self.log_test("Dashboard with Videos", False, f"Missing fields: {missing_fields}")
+                    return False
+            else:
+                self.log_test("Dashboard with Videos", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("Dashboard with Videos", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_video_completion(self):
+        """Test video completion and earning"""
+        if not self.session_id:
+            self.log_test("Video Completion", False, "No session available for testing")
+            return False
+        
+        try:
+            headers = {"X-Session-ID": self.session_id}
+            video_data = {
+                "video_id": "video_1",
+                "watch_duration": 35  # More than 30 seconds minimum
+            }
+            
+            response = requests.post(f"{API_BASE}/video/complete", json=video_data, headers=headers, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success") and data.get("amount_earned") == 0.25:
+                    self.log_test("Video Completion", True, 
+                                f"Successfully completed video and earned $0.25. New balance: ${data.get('new_balance')}")
+                    return True
+                else:
+                    self.log_test("Video Completion", False, f"Invalid response: {data}")
+                    return False
+            else:
+                self.log_test("Video Completion", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("Video Completion", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_video_duration_validation(self):
+        """Test video minimum duration validation"""
+        if not self.session_id:
+            self.log_test("Video Duration Validation", False, "No session available for testing")
+            return False
+        
+        try:
+            headers = {"X-Session-ID": self.session_id}
+            video_data = {
+                "video_id": "video_2",
+                "watch_duration": 15  # Less than 30 seconds minimum
+            }
+            
+            response = requests.post(f"{API_BASE}/video/complete", json=video_data, headers=headers, timeout=10)
+            
+            if response.status_code == 400:
+                data = response.json()
+                if "30 segundos" in data.get("detail", ""):
+                    self.log_test("Video Duration Validation", True, "Correctly rejected video with insufficient watch time")
+                    return True
+                else:
+                    self.log_test("Video Duration Validation", False, f"Unexpected error message: {data}")
+                    return False
+            else:
+                self.log_test("Video Duration Validation", False, f"Expected 400, got {response.status_code}: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("Video Duration Validation", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_click_system_with_auth(self):
+        """Test click system with authentication"""
+        if not self.session_id:
+            self.log_test("Click System (Authenticated)", False, "No session available for testing")
+            return False
+        
+        try:
+            headers = {"X-Session-ID": self.session_id}
+            click_data = {"content_id": "content_1"}
+            
+            response = requests.post(f"{API_BASE}/click", json=click_data, headers=headers, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success") and data.get("amount_earned") == 0.5:
+                    self.log_test("Click System (Authenticated)", True, 
+                                f"Successfully processed click and earned $0.50. New balance: ${data.get('new_balance')}")
+                    return True
+                else:
+                    self.log_test("Click System (Authenticated)", False, f"Invalid response: {data}")
+                    return False
+            else:
+                self.log_test("Click System (Authenticated)", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+        except Exception as e:
+            self.log_test("Click System (Authenticated)", False, f"Request error: {str(e)}")
+            return False
+    
+    def test_daily_limits(self):
+        """Test daily limits for clicks and videos"""
+        if not self.session_id:
+            self.log_test("Daily Limits", False, "No session available for testing")
+            return False
+        
+        try:
+            headers = {"X-Session-ID": self.session_id}
+            
+            # Get current dashboard to check limits
+            dashboard_response = requests.get(f"{API_BASE}/dashboard", headers=headers, timeout=10)
+            
+            if dashboard_response.status_code == 200:
+                dashboard_data = dashboard_response.json()
+                clicks_remaining = dashboard_data.get("clicks_remaining", 0)
+                videos_remaining = dashboard_data.get("videos_remaining", 0)
+                
+                self.log_test("Daily Limits Check", True, 
+                            f"Daily limits working - Clicks remaining: {clicks_remaining}/20, Videos remaining: {videos_remaining}/10")
+                return True
+            else:
+                self.log_test("Daily Limits Check", False, f"Could not check dashboard: {dashboard_response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("Daily Limits", False, f"Request error: {str(e)}")
+            return False
         """Test basic health check endpoint"""
         try:
             # The root URL serves frontend, so we test if backend is accessible via API routes
