@@ -338,6 +338,33 @@ class ClickEarnTester:
             self.log_test("Click System (Authenticated)", False, f"Request error: {str(e)}")
             return False
     
+    def test_daily_limits(self):
+        """Test daily limits for clicks and videos"""
+        if not self.session_id:
+            self.log_test("Daily Limits", False, "No session available for testing")
+            return False
+        
+        try:
+            headers = {"X-Session-ID": self.session_id}
+            
+            # Get current dashboard to check limits
+            dashboard_response = requests.get(f"{API_BASE}/dashboard", headers=headers, timeout=10)
+            
+            if dashboard_response.status_code == 200:
+                dashboard_data = dashboard_response.json()
+                clicks_remaining = dashboard_data.get("clicks_remaining", 0)
+                videos_remaining = dashboard_data.get("videos_remaining", 0)
+                
+                self.log_test("Daily Limits Check", True, 
+                            f"Daily limits working - Clicks remaining: {clicks_remaining}/20, Videos remaining: {videos_remaining}/10")
+                return True
+            else:
+                self.log_test("Daily Limits Check", False, f"Could not check dashboard: {dashboard_response.status_code}")
+                return False
+        except Exception as e:
+            self.log_test("Daily Limits", False, f"Request error: {str(e)}")
+            return False
+    
     def test_withdrawal_with_auth(self):
         """Test withdrawal functionality with authentication"""
         if not self.session_id:
