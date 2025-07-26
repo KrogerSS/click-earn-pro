@@ -1,0 +1,94 @@
+{
+  "summary": {
+    "passed": 1,
+    "total": 9,
+    "success_rate": 0.1111111111111111,
+    "timestamp": "2025-07-26T16:14:05.506620"
+  },
+  "detailed_results": [
+    {
+      "test": "Health Check",
+      "success": false,
+      "message": "Connection error: Expecting value: line 1 column 1 (char 0)",
+      "timestamp": "2025-07-26T16:14:05.288902",
+      "details": null
+    },
+    {
+      "test": "Database Connection",
+      "success": true,
+      "message": "Unexpected but non-error response: 502",
+      "timestamp": "2025-07-26T16:14:05.309450",
+      "details": null
+    },
+    {
+      "test": "Content API",
+      "success": false,
+      "message": "HTTP 502: ",
+      "timestamp": "2025-07-26T16:14:05.333180",
+      "details": null
+    },
+    {
+      "test": "Auth Without Session",
+      "success": false,
+      "message": "Expected 400, got 502",
+      "timestamp": "2025-07-26T16:14:05.349786",
+      "details": null
+    },
+    {
+      "test": "Auth Invalid Session",
+      "success": false,
+      "message": "Expected 401, got 502: ",
+      "timestamp": "2025-07-26T16:14:05.368302",
+      "details": null
+    },
+    {
+      "test": "Protected Route - Dashboard",
+      "success": false,
+      "message": "Expected 401, got 502",
+      "timestamp": "2025-07-26T16:14:05.384274",
+      "details": null
+    },
+    {
+      "test": "Protected Route - Click Processing",
+      "success": false,
+      "message": "Expected 401, got 502",
+      "timestamp": "2025-07-26T16:14:05.404221",
+      "details": null
+    },
+    {
+      "test": "Protected Route - Withdraw History",
+      "success": false,
+      "message": "Expected 401, got 502",
+      "timestamp": "2025-07-26T16:14:05.421463",
+      "details": null
+    },
+    {
+      "test": "Protected Route - Withdraw Request",
+      "success": false,
+      "message": "Expected 401, got 502",
+      "timestamp": "2025-07-26T16:14:05.439145",
+      "details": null
+    },
+    {
+      "test": "Auth Flow Structure",
+      "success": false,
+      "message": "Unexpected response: 502",
+      "timestamp": "2025-07-26T16:14:05.455047",
+      "details": null
+    },
+    {
+      "test": "Click System Auth",
+      "success": false,
+      "message": "Expected 401, got 502",
+      "timestamp": "2025-07-26T16:14:05.487208",
+      "details": null
+    },
+    {
+      "test": "Withdrawal System Auth",
+      "success": false,
+      "message": "Expected 401, got 502",
+      "timestamp": "2025-07-26T16:14:05.506189",
+      "details": null
+    }
+  ]
+}
