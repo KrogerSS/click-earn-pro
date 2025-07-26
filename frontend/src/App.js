@@ -84,44 +84,449 @@ const Header = () => {
   );
 };
 
-// Login Component
+// Login Component with multiple options
 const Login = () => {
-  const { login } = useAuth();
+  const { login, setUser } = useAuth();
+  const [loginMode, setLoginMode] = useState('options'); // options, email, phone, register
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [verificationCode, setVerificationCode] = useState('');
+  const [showVerification, setShowVerification] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [demoCode, setDemoCode] = useState('');
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleEmailLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage('');
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('session_token', data.session_id);
+        localStorage.setItem('user_data', JSON.stringify(data.user));
+        setUser(data.user);
+      } else {
+        setMessage(data.detail || 'Erro no login');
+      }
+    } catch (error) {
+      setMessage('Erro de conexão. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePhoneLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage('');
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          phone: formData.phone,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('session_token', data.session_id);
+        localStorage.setItem('user_data', JSON.stringify(data.user));
+        setUser(data.user);
+      } else {
+        setMessage(data.detail || 'Erro no login');
+      }
+    } catch (error) {
+      setMessage('Erro de conexão. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setMessage('Senhas não coincidem');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email || null,
+          phone: formData.phone || null,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('session_token', data.session_id);
+        localStorage.setItem('user_data', JSON.stringify(data.user));
+        setUser(data.user);
+      } else {
+        setMessage(data.detail || 'Erro no registro');
+      }
+    } catch (error) {
+      setMessage('Erro de conexão. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sendVerificationCode = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/send-code`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          phone: formData.phone
+        })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setShowVerification(true);
+        setDemoCode(data.demo_code); // For demo purposes
+        setMessage('Código enviado por SMS!');
+      } else {
+        setMessage(data.detail || 'Erro ao enviar código');
+      }
+    } catch (error) {
+      setMessage('Erro de conexão. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyCode = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/verify-code`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          phone: formData.phone,
+          code: verificationCode
+        })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setMessage('Telefone verificado com sucesso!');
+        setShowVerification(false);
+      } else {
+        setMessage(data.detail || 'Código inválido');
+      }
+    } catch (error) {
+      setMessage('Erro de conexão. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderLoginOptions = () => (
+    <div className="space-y-4">
+      <div className="text-center mb-8">
+        <div className="text-6xl mb-4">💰</div>
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">ClickEarn Pro</h1>
+        <p className="text-gray-600">Escolha como deseja entrar</p>
+      </div>
+
+      <button 
+        onClick={login}
+        className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-lg font-semibold hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 flex items-center justify-center space-x-2"
+      >
+        <span>🔐</span>
+        <span>Entrar com Google</span>
+      </button>
+
+      <div className="flex space-x-2">
+        <button 
+          onClick={() => setLoginMode('email')}
+          className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all"
+        >
+          📧 Email
+        </button>
+        <button 
+          onClick={() => setLoginMode('phone')}
+          className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all"
+        >
+          📱 Telefone
+        </button>
+      </div>
+
+      <button 
+        onClick={() => setLoginMode('register')}
+        className="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all"
+      >
+        ✨ Criar Conta
+      </button>
+
+      <div className="space-y-2 mt-6 text-sm text-gray-600">
+        <div className="flex items-center space-x-2">
+          <span>✓</span>
+          <span>Ganhe $0.50 por clique válido</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <span>✓</span>
+          <span>Assista vídeos e ganhe $0.25</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <span>✓</span>
+          <span>Saque mínimo de $10.00</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderEmailLogin = () => (
+    <div className="space-y-4">
+      <div className="flex items-center mb-6">
+        <button 
+          onClick={() => setLoginMode('options')}
+          className="mr-4 text-gray-600 hover:text-gray-800"
+        >
+          ← Voltar
+        </button>
+        <h2 className="text-2xl font-bold text-gray-800">Login com Email</h2>
+      </div>
+
+      <form onSubmit={handleEmailLogin} className="space-y-4">
+        <input
+          type="email"
+          name="email"
+          placeholder="Seu email"
+          value={formData.email}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Sua senha"
+          value={formData.password}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+        />
+        <button 
+          type="submit"
+          disabled={loading}
+          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all"
+        >
+          {loading ? 'Entrando...' : 'Entrar'}
+        </button>
+      </form>
+    </div>
+  );
+
+  const renderPhoneLogin = () => (
+    <div className="space-y-4">
+      <div className="flex items-center mb-6">
+        <button 
+          onClick={() => setLoginMode('options')}
+          className="mr-4 text-gray-600 hover:text-gray-800"
+        >
+          ← Voltar
+        </button>
+        <h2 className="text-2xl font-bold text-gray-800">Login com Telefone</h2>
+      </div>
+
+      {!showVerification ? (
+        <form onSubmit={handlePhoneLogin} className="space-y-4">
+          <input
+            type="tel"
+            name="phone"
+            placeholder="+55 11 99999-9999"
+            value={formData.phone}
+            onChange={handleInputChange}
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Sua senha"
+            value={formData.password}
+            onChange={handleInputChange}
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            required
+          />
+          <div className="flex space-x-2">
+            <button 
+              type="submit"
+              disabled={loading}
+              className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all"
+            >
+              {loading ? 'Entrando...' : 'Entrar'}
+            </button>
+            <button 
+              type="button"
+              onClick={sendVerificationCode}
+              disabled={loading || !formData.phone}
+              className="px-4 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-semibold transition-all"
+            >
+              Verificar
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className="space-y-4">
+          <p className="text-gray-600">Código enviado para {formData.phone}</p>
+          {demoCode && (
+            <p className="text-green-600 font-semibold">Demo: {demoCode}</p>
+          )}
+          <input
+            type="text"
+            placeholder="Código de 6 dígitos"
+            value={verificationCode}
+            onChange={(e) => setVerificationCode(e.target.value)}
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            maxLength="6"
+          />
+          <button 
+            onClick={verifyCode}
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all"
+          >
+            {loading ? 'Verificando...' : 'Verificar Código'}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderRegister = () => (
+    <div className="space-y-4">
+      <div className="flex items-center mb-6">
+        <button 
+          onClick={() => setLoginMode('options')}
+          className="mr-4 text-gray-600 hover:text-gray-800"
+        >
+          ← Voltar
+        </button>
+        <h2 className="text-2xl font-bold text-gray-800">Criar Conta</h2>
+      </div>
+
+      <form onSubmit={handleRegister} className="space-y-4">
+        <input
+          type="text"
+          name="name"
+          placeholder="Seu nome completo"
+          value={formData.name}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Seu email (opcional)"
+          value={formData.email}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Seu telefone (opcional)"
+          value={formData.phone}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Criar senha"
+          value={formData.password}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          required
+        />
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirmar senha"
+          value={formData.confirmPassword}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          required
+        />
+        <p className="text-sm text-gray-600">
+          * Pelo menos um email ou telefone é obrigatório
+        </p>
+        <button 
+          type="submit"
+          disabled={loading}
+          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all"
+        >
+          {loading ? 'Criando conta...' : 'Criar Conta'}
+        </button>
+      </form>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
       <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4">
-        <div className="text-center mb-8">
-          <div className="text-6xl mb-4">💰</div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">ClickEarn Pro</h1>
-          <p className="text-gray-600">Ganhe dinheiro clicando em conteúdos</p>
-        </div>
-        
-        <div className="space-y-4 mb-8">
-          <div className="flex items-center space-x-3 text-green-600">
-            <span>✓</span>
-            <span>Ganhe $0.50 por clique válido</span>
+        {message && (
+          <div className={`p-4 rounded-lg mb-4 ${message.includes('Erro') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+            {message}
           </div>
-          <div className="flex items-center space-x-3 text-green-600">
-            <span>✓</span>
-            <span>Limite de 20 cliques por dia</span>
-          </div>
-          <div className="flex items-center space-x-3 text-green-600">
-            <span>✓</span>
-            <span>Saque mínimo de $10.00</span>
-          </div>
-          <div className="flex items-center space-x-3 text-green-600">
-            <span>✓</span>
-            <span>Pagamentos via PayPal</span>
-          </div>
-        </div>
-        
-        <button 
-          onClick={login}
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105"
-        >
-          Entrar com Google
-        </button>
+        )}
+
+        {loginMode === 'options' && renderLoginOptions()}
+        {loginMode === 'email' && renderEmailLogin()}
+        {loginMode === 'phone' && renderPhoneLogin()}
+        {loginMode === 'register' && renderRegister()}
       </div>
     </div>
   );
@@ -130,14 +535,14 @@ const Login = () => {
 // Dashboard Stats Component
 const DashboardStats = ({ dashboard }) => {
   return (
-    <div className="grid md:grid-cols-4 gap-6 mb-8">
+    <div className="grid md:grid-cols-5 gap-6 mb-8">
       <div className="bg-gradient-to-r from-green-400 to-green-600 text-white rounded-xl p-6">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-green-100">Saldo Atual</p>
-            <p className="text-3xl font-bold">${dashboard.balance.toFixed(2)}</p>
+            <p className="text-2xl font-bold">${dashboard.balance.toFixed(2)}</p>
           </div>
-          <div className="text-4xl">💳</div>
+          <div className="text-3xl">💳</div>
         </div>
       </div>
       
@@ -145,9 +550,9 @@ const DashboardStats = ({ dashboard }) => {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-blue-100">Total Ganho</p>
-            <p className="text-3xl font-bold">${dashboard.total_earned.toFixed(2)}</p>
+            <p className="text-2xl font-bold">${dashboard.total_earned.toFixed(2)}</p>
           </div>
-          <div className="text-4xl">💰</div>
+          <div className="text-3xl">💰</div>
         </div>
       </div>
       
@@ -155,9 +560,19 @@ const DashboardStats = ({ dashboard }) => {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-purple-100">Cliques Hoje</p>
-            <p className="text-3xl font-bold">{dashboard.clicks_today}/20</p>
+            <p className="text-2xl font-bold">{dashboard.clicks_today}/20</p>
           </div>
-          <div className="text-4xl">👆</div>
+          <div className="text-3xl">👆</div>
+        </div>
+      </div>
+      
+      <div className="bg-gradient-to-r from-red-400 to-red-600 text-white rounded-xl p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-red-100">Vídeos Hoje</p>
+            <p className="text-2xl font-bold">{dashboard.videos_today}/10</p>
+          </div>
+          <div className="text-3xl">🎬</div>
         </div>
       </div>
       
@@ -165,10 +580,159 @@ const DashboardStats = ({ dashboard }) => {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-orange-100">Ganhos Hoje</p>
-            <p className="text-3xl font-bold">${dashboard.today_earnings.toFixed(2)}</p>
+            <p className="text-2xl font-bold">${dashboard.today_earnings.toFixed(2)}</p>
           </div>
-          <div className="text-4xl">📈</div>
+          <div className="text-3xl">📈</div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+// Video Ads Component
+const VideoAdsSection = ({ dashboard, onVideoComplete }) => {
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [watchingVideo, setWatchingVideo] = useState(null);
+  const [watchDuration, setWatchDuration] = useState(0);
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  useEffect(() => {
+    let interval;
+    if (watchingVideo) {
+      interval = setInterval(() => {
+        setWatchDuration(prev => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [watchingVideo]);
+
+  const fetchVideos = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/videos`);
+      const data = await response.json();
+      setVideos(data.videos);
+    } catch (error) {
+      console.error('Erro ao carregar vídeos:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const startWatching = (video) => {
+    setWatchingVideo(video);
+    setWatchDuration(0);
+  };
+
+  const stopWatching = async () => {
+    if (watchingVideo && watchDuration >= 30) {
+      try {
+        const sessionToken = localStorage.getItem('session_token');
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/video/complete`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Session-ID': sessionToken
+          },
+          body: JSON.stringify({
+            video_id: watchingVideo.id,
+            watch_duration: watchDuration
+          })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          onVideoComplete(data.message);
+        }
+      } catch (error) {
+        console.error('Erro ao completar vídeo:', error);
+      }
+    }
+    setWatchingVideo(null);
+    setWatchDuration(0);
+  };
+
+  if (loading) {
+    return <div className="text-center py-8">Carregando vídeos...</div>;
+  }
+
+  if (watchingVideo) {
+    return (
+      <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div className="text-center">
+          <h3 className="text-xl font-bold mb-4">{watchingVideo.title}</h3>
+          <div className="bg-black rounded-lg p-8 mb-4">
+            <img 
+              src={watchingVideo.thumbnail}
+              alt={watchingVideo.title}
+              className="w-full max-w-md mx-auto rounded"
+            />
+          </div>
+          <div className="flex items-center justify-center space-x-4 mb-4">
+            <span className="text-lg">⏱️ {watchDuration}s / {watchingVideo.duration}s</span>
+            <div className="w-64 bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-green-500 h-2 rounded-full transition-all"
+                style={{ width: `${Math.min((watchDuration / watchingVideo.duration) * 100, 100)}%` }}
+              ></div>
+            </div>
+          </div>
+          <button 
+            onClick={stopWatching}
+            className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+              watchDuration >= 30 
+                ? 'bg-green-600 hover:bg-green-700 text-white' 
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+          >
+            {watchDuration >= 30 ? `Finalizar (+$${watchingVideo.earnings})` : `Aguarde ${30 - watchDuration}s`}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Vídeos Publicitários</h2>
+        <div className="bg-red-100 text-red-800 px-4 py-2 rounded-lg">
+          {dashboard.videos_remaining} vídeos restantes
+        </div>
+      </div>
+      
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {videos.map((video) => (
+          <div key={video.id} className="border rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+            <img 
+              src={video.thumbnail} 
+              alt={video.title}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-4">
+              <h3 className="font-semibold text-gray-800 mb-2">{video.title}</h3>
+              <p className="text-gray-600 text-sm mb-2">{video.description}</p>
+              <p className="text-sm text-gray-500 mb-4">Duração: {video.duration}s</p>
+              <div className="flex justify-between items-center">
+                <span className="text-green-600 font-semibold">+${video.earnings}</span>
+                <button 
+                  onClick={() => startWatching(video)}
+                  disabled={dashboard.videos_remaining <= 0}
+                  className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                    dashboard.videos_remaining > 0 
+                      ? 'bg-red-600 hover:bg-red-700 text-white hover:scale-105' 
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
+                >
+                  {dashboard.videos_remaining > 0 ? 'Assistir' : 'Limite atingido'}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -421,6 +985,12 @@ const Dashboard = () => {
     }
   };
 
+  const handleVideoComplete = (successMessage) => {
+    setMessage(successMessage);
+    fetchDashboard(); // Refresh dashboard
+    setTimeout(() => setMessage(''), 3000);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -438,12 +1008,13 @@ const Dashboard = () => {
       
       <div className="container mx-auto px-4 py-8">
         {message && (
-          <div className={`p-4 rounded-lg mb-6 ${message.includes('Erro') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+          <div className={`p-4 rounded-lg mb-6 message-fade-in ${message.includes('Erro') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
             {message}
           </div>
         )}
         
         <DashboardStats dashboard={dashboard} />
+        <VideoAdsSection dashboard={dashboard} onVideoComplete={handleVideoComplete} />
         <ContentGrid dashboard={dashboard} onContentClick={handleContentClick} />
         <WithdrawSection dashboard={dashboard} onWithdrawSuccess={fetchDashboard} />
       </div>
