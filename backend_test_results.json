@@ -1,177 +1,177 @@
 {
   "summary": {
-    "passed": 10,
+    "passed": 19,
     "total": 19,
-    "success_rate": 0.5263157894736842,
-    "timestamp": "2025-07-26T16:43:15.721169"
+    "success_rate": 1.0,
+    "timestamp": "2025-07-26T16:43:40.048343"
   },
   "detailed_results": [
     {
       "test": "Health Check",
       "success": true,
       "message": "Backend API is accessible and responding",
-      "timestamp": "2025-07-26T16:43:05.677196",
+      "timestamp": "2025-07-26T16:43:29.779287",
       "details": null
     },
     {
       "test": "Database Connection",
       "success": true,
       "message": "Database connection appears functional (auth checks working)",
-      "timestamp": "2025-07-26T16:43:06.195683",
+      "timestamp": "2025-07-26T16:43:30.300256",
       "details": null
     },
     {
       "test": "Content API",
       "success": true,
       "message": "Retrieved 4 content items with correct structure",
-      "timestamp": "2025-07-26T16:43:06.716242",
+      "timestamp": "2025-07-26T16:43:30.819965",
       "details": null
     },
     {
       "test": "Videos API",
       "success": true,
       "message": "Retrieved 3 videos with correct structure",
-      "timestamp": "2025-07-26T16:43:07.232692",
+      "timestamp": "2025-07-26T16:43:31.337367",
       "details": null
     },
     {
       "test": "User Registration (Email)",
-      "success": false,
-      "message": "HTTP 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"email\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":\"testuser_8152@example.com\",\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"},{\"type\":\"value_error\",\"loc\":[\"body\",\"phone\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":null,\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"}]}",
-      "timestamp": "2025-07-26T16:43:07.753486",
+      "success": true,
+      "message": "Successfully registered user with email: testuser_6328@example.com",
+      "timestamp": "2025-07-26T16:43:31.889037",
       "details": null
     },
     {
       "test": "User Login (Email)",
-      "success": false,
-      "message": "HTTP 401: {\"detail\":\"Usu\u00e1rio n\u00e3o encontrado\"}",
-      "timestamp": "2025-07-26T16:43:08.270172",
+      "success": true,
+      "message": "Successfully logged in with email: testuser_6328@example.com",
+      "timestamp": "2025-07-26T16:43:32.411645",
       "details": null
     },
     {
       "test": "SMS Send Code",
       "success": true,
-      "message": "Successfully sent verification code: 106937",
-      "timestamp": "2025-07-26T16:43:08.789289",
+      "message": "Successfully sent verification code: 342686",
+      "timestamp": "2025-07-26T16:43:32.930312",
       "details": null
     },
     {
       "test": "SMS Verify Code",
       "success": true,
       "message": "Successfully verified SMS code",
-      "timestamp": "2025-07-26T16:43:08.809442",
+      "timestamp": "2025-07-26T16:43:32.947173",
       "details": null
     },
     {
       "test": "Dashboard with Videos",
-      "success": false,
-      "message": "No session available for testing",
-      "timestamp": "2025-07-26T16:43:09.310119",
+      "success": true,
+      "message": "Dashboard includes video stats - Videos today: 0, Videos remaining: 10",
+      "timestamp": "2025-07-26T16:43:33.466254",
       "details": null
     },
     {
       "test": "Video Completion",
-      "success": false,
-      "message": "No session available for testing",
-      "timestamp": "2025-07-26T16:43:09.810262",
+      "success": true,
+      "message": "Successfully completed video and earned $0.25. New balance: $0.25",
+      "timestamp": "2025-07-26T16:43:34.023076",
       "details": null
     },
     {
       "test": "Video Duration Validation",
-      "success": false,
-      "message": "No session available for testing",
-      "timestamp": "2025-07-26T16:43:10.310415",
+      "success": true,
+      "message": "Correctly rejected video with insufficient watch time",
+      "timestamp": "2025-07-26T16:43:34.545288",
       "details": null
     },
     {
       "test": "Click System (Authenticated)",
-      "success": false,
-      "message": "No session available for testing",
-      "timestamp": "2025-07-26T16:43:10.810532",
+      "success": true,
+      "message": "Successfully processed click and earned $0.50. New balance: $0.75",
+      "timestamp": "2025-07-26T16:43:35.092054",
       "details": null
     },
     {
-      "test": "Daily Limits",
-      "success": false,
-      "message": "No session available for testing",
-      "timestamp": "2025-07-26T16:43:11.310640",
+      "test": "Daily Limits Check",
+      "success": true,
+      "message": "Daily limits working - Clicks remaining: 19/20, Videos remaining: 9/10",
+      "timestamp": "2025-07-26T16:43:35.620455",
       "details": null
     },
     {
       "test": "Withdrawal System Auth",
       "success": true,
       "message": "Withdrawal endpoint properly requires authentication",
-      "timestamp": "2025-07-26T16:43:11.855182",
+      "timestamp": "2025-07-26T16:43:36.156997",
       "details": null
     },
     {
       "test": "Withdrawal History Auth",
       "success": true,
       "message": "Withdrawal history properly requires authentication",
-      "timestamp": "2025-07-26T16:43:11.869308",
+      "timestamp": "2025-07-26T16:43:36.176772",
       "details": null
     },
     {
       "test": "User Registration (Phone)",
-      "success": false,
-      "message": "HTTP 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"email\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":null,\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"},{\"type\":\"value_error\",\"loc\":[\"body\",\"phone\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":\"+15559389435\",\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"}]}",
-      "timestamp": "2025-07-26T16:43:12.391551",
+      "success": true,
+      "message": "Successfully registered user with phone: +15553947224",
+      "timestamp": "2025-07-26T16:43:36.700741",
       "details": null
     },
     {
       "test": "User Login (Phone)",
-      "success": false,
-      "message": "HTTP 401: {\"detail\":\"Usu\u00e1rio n\u00e3o encontrado\"}",
-      "timestamp": "2025-07-26T16:43:12.908840",
+      "success": true,
+      "message": "Successfully logged in with phone: +15553947224",
+      "timestamp": "2025-07-26T16:43:37.220740",
       "details": null
     },
     {
       "test": "Auth Without Session",
       "success": true,
       "message": "Correctly rejected request without session ID",
-      "timestamp": "2025-07-26T16:43:13.429250",
+      "timestamp": "2025-07-26T16:43:37.738241",
       "details": null
     },
     {
       "test": "Auth Invalid Session",
       "success": true,
       "message": "Correctly rejected invalid session ID",
-      "timestamp": "2025-07-26T16:43:14.049023",
+      "timestamp": "2025-07-26T16:43:38.371227",
       "details": null
     },
     {
       "test": "Protected Route - Dashboard",
       "success": true,
       "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:43:14.564294",
+      "timestamp": "2025-07-26T16:43:38.892138",
       "details": null
     },
     {
       "test": "Protected Route - Click Processing",
       "success": true,
       "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:43:14.586756",
+      "timestamp": "2025-07-26T16:43:38.910335",
       "details": null
     },
     {
       "test": "Protected Route - Withdraw History",
       "success": true,
       "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:43:14.601425",
+      "timestamp": "2025-07-26T16:43:38.927657",
       "details": null
     },
     {
       "test": "Protected Route - Withdraw Request",
       "success": true,
       "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:43:14.619813",
+      "timestamp": "2025-07-26T16:43:38.948491",
       "details": null
     },
     {
       "test": "Auth Flow Structure",
       "success": true,
       "message": "Authentication endpoint properly validates with external service",
-      "timestamp": "2025-07-26T16:43:15.220491",
+      "timestamp": "2025-07-26T16:43:39.547625",
       "details": null
     }
   ]
