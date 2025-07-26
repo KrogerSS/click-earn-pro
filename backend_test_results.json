@@ -3,175 +3,175 @@
     "passed": 10,
     "total": 19,
     "success_rate": 0.5263157894736842,
-    "timestamp": "2025-07-26T16:42:39.038301"
+    "timestamp": "2025-07-26T16:43:15.721169"
   },
   "detailed_results": [
     {
       "test": "Health Check",
       "success": true,
       "message": "Backend API is accessible and responding",
-      "timestamp": "2025-07-26T16:42:28.960618",
+      "timestamp": "2025-07-26T16:43:05.677196",
       "details": null
     },
     {
       "test": "Database Connection",
       "success": true,
       "message": "Database connection appears functional (auth checks working)",
-      "timestamp": "2025-07-26T16:42:29.480737",
+      "timestamp": "2025-07-26T16:43:06.195683",
       "details": null
     },
     {
       "test": "Content API",
       "success": true,
       "message": "Retrieved 4 content items with correct structure",
-      "timestamp": "2025-07-26T16:42:30.007882",
+      "timestamp": "2025-07-26T16:43:06.716242",
       "details": null
     },
     {
       "test": "Videos API",
       "success": true,
       "message": "Retrieved 3 videos with correct structure",
-      "timestamp": "2025-07-26T16:42:30.524102",
+      "timestamp": "2025-07-26T16:43:07.232692",
       "details": null
     },
     {
       "test": "User Registration (Email)",
       "success": false,
-      "message": "HTTP 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"email\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":\"testuser_8198@example.com\",\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"}]}",
-      "timestamp": "2025-07-26T16:42:31.057039",
+      "message": "HTTP 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"email\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":\"testuser_8152@example.com\",\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"},{\"type\":\"value_error\",\"loc\":[\"body\",\"phone\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":null,\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"}]}",
+      "timestamp": "2025-07-26T16:43:07.753486",
       "details": null
     },
     {
       "test": "User Login (Email)",
       "success": false,
       "message": "HTTP 401: {\"detail\":\"Usu\u00e1rio n\u00e3o encontrado\"}",
-      "timestamp": "2025-07-26T16:42:31.579246",
+      "timestamp": "2025-07-26T16:43:08.270172",
       "details": null
     },
     {
       "test": "SMS Send Code",
       "success": true,
-      "message": "Successfully sent verification code: 426634",
-      "timestamp": "2025-07-26T16:42:32.110321",
+      "message": "Successfully sent verification code: 106937",
+      "timestamp": "2025-07-26T16:43:08.789289",
       "details": null
     },
     {
       "test": "SMS Verify Code",
       "success": true,
       "message": "Successfully verified SMS code",
-      "timestamp": "2025-07-26T16:42:32.134457",
+      "timestamp": "2025-07-26T16:43:08.809442",
       "details": null
     },
     {
       "test": "Dashboard with Videos",
       "success": false,
       "message": "No session available for testing",
-      "timestamp": "2025-07-26T16:42:32.635091",
+      "timestamp": "2025-07-26T16:43:09.310119",
       "details": null
     },
     {
       "test": "Video Completion",
       "success": false,
       "message": "No session available for testing",
-      "timestamp": "2025-07-26T16:42:33.135247",
+      "timestamp": "2025-07-26T16:43:09.810262",
       "details": null
     },
     {
       "test": "Video Duration Validation",
       "success": false,
       "message": "No session available for testing",
-      "timestamp": "2025-07-26T16:42:33.635403",
+      "timestamp": "2025-07-26T16:43:10.310415",
       "details": null
     },
     {
       "test": "Click System (Authenticated)",
       "success": false,
       "message": "No session available for testing",
-      "timestamp": "2025-07-26T16:42:34.135541",
+      "timestamp": "2025-07-26T16:43:10.810532",
       "details": null
     },
     {
       "test": "Daily Limits",
       "success": false,
       "message": "No session available for testing",
-      "timestamp": "2025-07-26T16:42:34.635715",
+      "timestamp": "2025-07-26T16:43:11.310640",
       "details": null
     },
     {
       "test": "Withdrawal System Auth",
       "success": true,
       "message": "Withdrawal endpoint properly requires authentication",
-      "timestamp": "2025-07-26T16:42:35.180593",
+      "timestamp": "2025-07-26T16:43:11.855182",
       "details": null
     },
     {
       "test": "Withdrawal History Auth",
       "success": true,
       "message": "Withdrawal history properly requires authentication",
-      "timestamp": "2025-07-26T16:42:35.199348",
+      "timestamp": "2025-07-26T16:43:11.869308",
       "details": null
     },
     {
       "test": "User Registration (Phone)",
       "success": false,
-      "message": "HTTP 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"phone\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":\"+15554666165\",\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"}]}",
-      "timestamp": "2025-07-26T16:42:35.725498",
+      "message": "HTTP 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"email\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":null,\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"},{\"type\":\"value_error\",\"loc\":[\"body\",\"phone\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":\"+15559389435\",\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"}]}",
+      "timestamp": "2025-07-26T16:43:12.391551",
       "details": null
     },
     {
       "test": "User Login (Phone)",
       "success": false,
       "message": "HTTP 401: {\"detail\":\"Usu\u00e1rio n\u00e3o encontrado\"}",
-      "timestamp": "2025-07-26T16:42:36.249738",
+      "timestamp": "2025-07-26T16:43:12.908840",
       "details": null
     },
     {
       "test": "Auth Without Session",
       "success": true,
       "message": "Correctly rejected request without session ID",
-      "timestamp": "2025-07-26T16:42:36.764392",
+      "timestamp": "2025-07-26T16:43:13.429250",
       "details": null
     },
     {
       "test": "Auth Invalid Session",
       "success": true,
       "message": "Correctly rejected invalid session ID",
-      "timestamp": "2025-07-26T16:42:37.388039",
+      "timestamp": "2025-07-26T16:43:14.049023",
       "details": null
     },
     {
       "test": "Protected Route - Dashboard",
       "success": true,
       "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:42:37.906752",
+      "timestamp": "2025-07-26T16:43:14.564294",
       "details": null
     },
     {
       "test": "Protected Route - Click Processing",
       "success": true,
       "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:42:37.922787",
+      "timestamp": "2025-07-26T16:43:14.586756",
       "details": null
     },
     {
       "test": "Protected Route - Withdraw History",
       "success": true,
       "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:42:37.936480",
+      "timestamp": "2025-07-26T16:43:14.601425",
       "details": null
     },
     {
       "test": "Protected Route - Withdraw Request",
       "success": true,
       "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:42:37.954771",
+      "timestamp": "2025-07-26T16:43:14.619813",
       "details": null
     },
     {
       "test": "Auth Flow Structure",
       "success": true,
       "message": "Authentication endpoint properly validates with external service",
-      "timestamp": "2025-07-26T16:42:38.537605",
+      "timestamp": "2025-07-26T16:43:15.220491",
       "details": null
     }
   ]
