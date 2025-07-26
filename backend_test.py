@@ -338,7 +338,58 @@ class ClickEarnTester:
             self.log_test("Click System (Authenticated)", False, f"Request error: {str(e)}")
             return False
     
-    def test_daily_limits(self):
+    def test_withdrawal_with_auth(self):
+        """Test withdrawal functionality with authentication"""
+        if not self.session_id:
+            self.log_test("Withdrawal with Auth", False, "No session available for testing")
+            return False
+        
+        try:
+            headers = {"X-Session-ID": self.session_id}
+            
+            # First check current balance
+            dashboard_response = requests.get(f"{API_BASE}/dashboard", headers=headers, timeout=10)
+            if dashboard_response.status_code != 200:
+                self.log_test("Withdrawal with Auth", False, "Could not get dashboard for balance check")
+                return False
+            
+            balance = dashboard_response.json().get("balance", 0)
+            
+            if balance < 10:
+                # Test withdrawal with insufficient balance
+                withdraw_data = {"amount": 15.0, "paypal_email": "test@example.com"}
+                response = requests.post(f"{API_BASE}/withdraw", json=withdraw_data, headers=headers, timeout=10)
+                
+                if response.status_code == 400:
+                    data = response.json()
+                    if "Saldo insuficiente" in data.get("detail", ""):
+                        self.log_test("Withdrawal with Auth", True, f"Correctly rejected withdrawal with insufficient balance (${balance})")
+                        return True
+                    else:
+                        self.log_test("Withdrawal with Auth", False, f"Unexpected error: {data}")
+                        return False
+                else:
+                    self.log_test("Withdrawal with Auth", False, f"Expected 400, got {response.status_code}")
+                    return False
+            else:
+                # Test valid withdrawal
+                withdraw_data = {"amount": 10.0, "paypal_email": "test@example.com"}
+                response = requests.post(f"{API_BASE}/withdraw", json=withdraw_data, headers=headers, timeout=10)
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("success"):
+                        self.log_test("Withdrawal with Auth", True, f"Successfully processed withdrawal of $10.00")
+                        return True
+                    else:
+                        self.log_test("Withdrawal with Auth", False, f"Invalid response: {data}")
+                        return False
+                else:
+                    self.log_test("Withdrawal with Auth", False, f"HTTP {response.status_code}: {response.text}")
+                    return False
+        except Exception as e:
+            self.log_test("Withdrawal with Auth", False, f"Request error: {str(e)}")
+            return False
         """Test daily limits for clicks and videos"""
         if not self.session_id:
             self.log_test("Daily Limits", False, "No session available for testing")
