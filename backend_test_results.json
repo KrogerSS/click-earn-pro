@@ -1,100 +1,177 @@
 {
   "summary": {
-    "passed": 9,
-    "total": 9,
-    "success_rate": 1.0,
-    "timestamp": "2025-07-26T16:15:46.827188"
+    "passed": 10,
+    "total": 19,
+    "success_rate": 0.5263157894736842,
+    "timestamp": "2025-07-26T16:42:39.038301"
   },
   "detailed_results": [
     {
       "test": "Health Check",
       "success": true,
       "message": "Backend API is accessible and responding",
-      "timestamp": "2025-07-26T16:15:46.333509",
+      "timestamp": "2025-07-26T16:42:28.960618",
       "details": null
     },
     {
       "test": "Database Connection",
       "success": true,
       "message": "Database connection appears functional (auth checks working)",
-      "timestamp": "2025-07-26T16:15:46.349742",
+      "timestamp": "2025-07-26T16:42:29.480737",
       "details": null
     },
     {
       "test": "Content API",
       "success": true,
       "message": "Retrieved 4 content items with correct structure",
-      "timestamp": "2025-07-26T16:15:46.366141",
+      "timestamp": "2025-07-26T16:42:30.007882",
       "details": null
     },
     {
-      "test": "Auth Without Session",
+      "test": "Videos API",
       "success": true,
-      "message": "Correctly rejected request without session ID",
-      "timestamp": "2025-07-26T16:15:46.421695",
+      "message": "Retrieved 3 videos with correct structure",
+      "timestamp": "2025-07-26T16:42:30.524102",
       "details": null
     },
     {
-      "test": "Auth Invalid Session",
-      "success": true,
-      "message": "Correctly rejected invalid session ID",
-      "timestamp": "2025-07-26T16:15:46.554135",
+      "test": "User Registration (Email)",
+      "success": false,
+      "message": "HTTP 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"email\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":\"testuser_8198@example.com\",\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"}]}",
+      "timestamp": "2025-07-26T16:42:31.057039",
       "details": null
     },
     {
-      "test": "Protected Route - Dashboard",
-      "success": true,
-      "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:15:46.576001",
+      "test": "User Login (Email)",
+      "success": false,
+      "message": "HTTP 401: {\"detail\":\"Usu\u00e1rio n\u00e3o encontrado\"}",
+      "timestamp": "2025-07-26T16:42:31.579246",
       "details": null
     },
     {
-      "test": "Protected Route - Click Processing",
+      "test": "SMS Send Code",
       "success": true,
-      "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:15:46.626699",
+      "message": "Successfully sent verification code: 426634",
+      "timestamp": "2025-07-26T16:42:32.110321",
       "details": null
     },
     {
-      "test": "Protected Route - Withdraw History",
+      "test": "SMS Verify Code",
       "success": true,
-      "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:15:46.643901",
+      "message": "Successfully verified SMS code",
+      "timestamp": "2025-07-26T16:42:32.134457",
       "details": null
     },
     {
-      "test": "Protected Route - Withdraw Request",
-      "success": true,
-      "message": "Correctly requires authentication",
-      "timestamp": "2025-07-26T16:15:46.665561",
+      "test": "Dashboard with Videos",
+      "success": false,
+      "message": "No session available for testing",
+      "timestamp": "2025-07-26T16:42:32.635091",
       "details": null
     },
     {
-      "test": "Auth Flow Structure",
-      "success": true,
-      "message": "Authentication endpoint properly validates with external service",
-      "timestamp": "2025-07-26T16:15:46.770314",
+      "test": "Video Completion",
+      "success": false,
+      "message": "No session available for testing",
+      "timestamp": "2025-07-26T16:42:33.135247",
       "details": null
     },
     {
-      "test": "Click System Auth",
-      "success": true,
-      "message": "Click endpoint properly requires authentication",
-      "timestamp": "2025-07-26T16:15:46.789833",
+      "test": "Video Duration Validation",
+      "success": false,
+      "message": "No session available for testing",
+      "timestamp": "2025-07-26T16:42:33.635403",
+      "details": null
+    },
+    {
+      "test": "Click System (Authenticated)",
+      "success": false,
+      "message": "No session available for testing",
+      "timestamp": "2025-07-26T16:42:34.135541",
+      "details": null
+    },
+    {
+      "test": "Daily Limits",
+      "success": false,
+      "message": "No session available for testing",
+      "timestamp": "2025-07-26T16:42:34.635715",
       "details": null
     },
     {
       "test": "Withdrawal System Auth",
       "success": true,
       "message": "Withdrawal endpoint properly requires authentication",
-      "timestamp": "2025-07-26T16:15:46.807729",
+      "timestamp": "2025-07-26T16:42:35.180593",
       "details": null
     },
     {
       "test": "Withdrawal History Auth",
       "success": true,
       "message": "Withdrawal history properly requires authentication",
-      "timestamp": "2025-07-26T16:15:46.826589",
+      "timestamp": "2025-07-26T16:42:35.199348",
+      "details": null
+    },
+    {
+      "test": "User Registration (Phone)",
+      "success": false,
+      "message": "HTTP 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"phone\"],\"msg\":\"Value error, Email ou telefone \u00e9 obrigat\u00f3rio\",\"input\":\"+15554666165\",\"ctx\":{\"error\":{}},\"url\":\"https://errors.pydantic.dev/2.11/v/value_error\"}]}",
+      "timestamp": "2025-07-26T16:42:35.725498",
+      "details": null
+    },
+    {
+      "test": "User Login (Phone)",
+      "success": false,
+      "message": "HTTP 401: {\"detail\":\"Usu\u00e1rio n\u00e3o encontrado\"}",
+      "timestamp": "2025-07-26T16:42:36.249738",
+      "details": null
+    },
+    {
+      "test": "Auth Without Session",
+      "success": true,
+      "message": "Correctly rejected request without session ID",
+      "timestamp": "2025-07-26T16:42:36.764392",
+      "details": null
+    },
+    {
+      "test": "Auth Invalid Session",
+      "success": true,
+      "message": "Correctly rejected invalid session ID",
+      "timestamp": "2025-07-26T16:42:37.388039",
+      "details": null
+    },
+    {
+      "test": "Protected Route - Dashboard",
+      "success": true,
+      "message": "Correctly requires authentication",
+      "timestamp": "2025-07-26T16:42:37.906752",
+      "details": null
+    },
+    {
+      "test": "Protected Route - Click Processing",
+      "success": true,
+      "message": "Correctly requires authentication",
+      "timestamp": "2025-07-26T16:42:37.922787",
+      "details": null
+    },
+    {
+      "test": "Protected Route - Withdraw History",
+      "success": true,
+      "message": "Correctly requires authentication",
+      "timestamp": "2025-07-26T16:42:37.936480",
+      "details": null
+    },
+    {
+      "test": "Protected Route - Withdraw Request",
+      "success": true,
+      "message": "Correctly requires authentication",
+      "timestamp": "2025-07-26T16:42:37.954771",
+      "details": null
+    },
+    {
+      "test": "Auth Flow Structure",
+      "success": true,
+      "message": "Authentication endpoint properly validates with external service",
+      "timestamp": "2025-07-26T16:42:38.537605",
       "details": null
     }
   ]
