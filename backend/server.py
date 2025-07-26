@@ -58,16 +58,16 @@ class UserRegister(BaseModel):
     phone: Optional[str] = None
     password: str
     
-    @validator('email', 'phone')
-    def email_or_phone_required(cls, v, values):
-        if not values.get('email') and not values.get('phone'):
-            raise ValueError('Email ou telefone é obrigatório')
-        return v
-    
     @validator('phone')
     def validate_phone(cls, v):
         if v and not re.match(r'^\+?[\d\s\-\(\)]{10,}$', v):
             raise ValueError('Formato de telefone inválido')
+        return v
+    
+    @validator('password')
+    def email_or_phone_required(cls, v, values):
+        if not values.get('email') and not values.get('phone'):
+            raise ValueError('Email ou telefone é obrigatório')
         return v
 
 class UserLogin(BaseModel):
