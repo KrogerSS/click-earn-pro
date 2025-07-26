@@ -1,93 +1,100 @@
 {
   "summary": {
-    "passed": 1,
+    "passed": 6,
     "total": 9,
-    "success_rate": 0.1111111111111111,
-    "timestamp": "2025-07-26T16:14:05.506620"
+    "success_rate": 0.6666666666666666,
+    "timestamp": "2025-07-26T16:14:51.018231"
   },
   "detailed_results": [
     {
       "test": "Health Check",
       "success": false,
       "message": "Connection error: Expecting value: line 1 column 1 (char 0)",
-      "timestamp": "2025-07-26T16:14:05.288902",
+      "timestamp": "2025-07-26T16:14:50.575651",
       "details": null
     },
     {
       "test": "Database Connection",
       "success": true,
-      "message": "Unexpected but non-error response: 502",
-      "timestamp": "2025-07-26T16:14:05.309450",
+      "message": "Database connection appears functional (auth checks working)",
+      "timestamp": "2025-07-26T16:14:50.593944",
       "details": null
     },
     {
       "test": "Content API",
-      "success": false,
-      "message": "HTTP 502: ",
-      "timestamp": "2025-07-26T16:14:05.333180",
+      "success": true,
+      "message": "Retrieved 4 content items with correct structure",
+      "timestamp": "2025-07-26T16:14:50.617824",
       "details": null
     },
     {
       "test": "Auth Without Session",
       "success": false,
-      "message": "Expected 400, got 502",
-      "timestamp": "2025-07-26T16:14:05.349786",
+      "message": "Expected 400, got 500",
+      "timestamp": "2025-07-26T16:14:50.635746",
       "details": null
     },
     {
       "test": "Auth Invalid Session",
       "success": false,
-      "message": "Expected 401, got 502: ",
-      "timestamp": "2025-07-26T16:14:05.368302",
+      "message": "Expected 401, got 500: {\"detail\":\"401: Invalid session\"}",
+      "timestamp": "2025-07-26T16:14:50.762587",
       "details": null
     },
     {
       "test": "Protected Route - Dashboard",
-      "success": false,
-      "message": "Expected 401, got 502",
-      "timestamp": "2025-07-26T16:14:05.384274",
+      "success": true,
+      "message": "Correctly requires authentication",
+      "timestamp": "2025-07-26T16:14:50.789479",
       "details": null
     },
     {
       "test": "Protected Route - Click Processing",
-      "success": false,
-      "message": "Expected 401, got 502",
-      "timestamp": "2025-07-26T16:14:05.404221",
+      "success": true,
+      "message": "Correctly requires authentication",
+      "timestamp": "2025-07-26T16:14:50.806618",
       "details": null
     },
     {
       "test": "Protected Route - Withdraw History",
-      "success": false,
-      "message": "Expected 401, got 502",
-      "timestamp": "2025-07-26T16:14:05.421463",
+      "success": true,
+      "message": "Correctly requires authentication",
+      "timestamp": "2025-07-26T16:14:50.824924",
       "details": null
     },
     {
       "test": "Protected Route - Withdraw Request",
-      "success": false,
-      "message": "Expected 401, got 502",
-      "timestamp": "2025-07-26T16:14:05.439145",
+      "success": true,
+      "message": "Correctly requires authentication",
+      "timestamp": "2025-07-26T16:14:50.884715",
       "details": null
     },
     {
       "test": "Auth Flow Structure",
-      "success": false,
-      "message": "Unexpected response: 502",
-      "timestamp": "2025-07-26T16:14:05.455047",
+      "success": true,
+      "message": "Authentication endpoint properly validates with external service",
+      "timestamp": "2025-07-26T16:14:50.962506",
       "details": null
     },
     {
       "test": "Click System Auth",
-      "success": false,
-      "message": "Expected 401, got 502",
-      "timestamp": "2025-07-26T16:14:05.487208",
+      "success": true,
+      "message": "Click endpoint properly requires authentication",
+      "timestamp": "2025-07-26T16:14:50.981717",
       "details": null
     },
     {
       "test": "Withdrawal System Auth",
-      "success": false,
-      "message": "Expected 401, got 502",
-      "timestamp": "2025-07-26T16:14:05.506189",
+      "success": true,
+      "message": "Withdrawal endpoint properly requires authentication",
+      "timestamp": "2025-07-26T16:14:50.998194",
+      "details": null
+    },
+    {
+      "test": "Withdrawal History Auth",
+      "success": true,
+      "message": "Withdrawal history properly requires authentication",
+      "timestamp": "2025-07-26T16:14:51.017566",
       "details": null
     }
   ]
