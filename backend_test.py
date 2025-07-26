@@ -45,6 +45,7 @@ class ClickEarnTester:
             register_data = {
                 "name": "Test User Email",
                 "email": self.test_user_email,
+                "phone": None,  # Explicitly set phone to None
                 "password": self.test_password
             }
             
@@ -72,6 +73,7 @@ class ClickEarnTester:
         try:
             register_data = {
                 "name": "Test User Phone",
+                "email": None,  # Explicitly set email to None
                 "phone": self.test_user_phone,
                 "password": self.test_password
             }
