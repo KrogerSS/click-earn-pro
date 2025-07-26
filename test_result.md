@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Criar um aplicativo híbrido ClickEarn Pro com sistema de ganhos por clique, autenticação Google OAuth, dashboard de saldo, integração PayPal para saques, limites diários e interface moderna"
+user_problem_statement: "Testar o sistema completo do ClickEarn Pro com as novas funcionalidades: Sistema de Autenticação Múltipla (email/telefone + SMS), Sistema de Vídeos Publicitários, e todas as rotas existentes atualizadas"
 
 backend:
   - task: "FastAPI server setup with MongoDB"
@@ -119,6 +119,24 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: Server running successfully on port 8001, MongoDB connection functional, all API routes accessible. Fixed missing httpx dependency."
+      - working: true
+        agent: "testing"
+        comment: "✅ RE-TESTED: Server health check passed, database connection functional, all API endpoints accessible and responding correctly."
+
+  - task: "Multiple Authentication System (Email/Phone + SMS)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implementado sistema de autenticação múltipla com registro/login via email ou telefone, sistema de códigos SMS para verificação"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: All authentication methods working - POST /api/auth/register (email/phone), POST /api/auth/login (email/phone), POST /api/auth/send-code, POST /api/auth/verify-code. Fixed Pydantic validator issue. SMS system returns demo codes correctly."
 
   - task: "Emergent Auth integration"
     implemented: true
@@ -134,6 +152,24 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: Authentication endpoints working correctly, proper session validation, external API integration structure in place, error handling functional."
+      - working: true
+        agent: "testing"
+        comment: "✅ RE-TESTED: POST /api/auth/profile endpoint properly validates with external Emergent Auth service, handles invalid sessions correctly."
+
+  - task: "Video Advertising System"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implementado sistema de vídeos publicitários com limite diário (10 vídeos), validação de duração mínima (30s), ganho de $0.25 por vídeo"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Video system fully functional - GET /api/videos returns 3 videos with correct structure, POST /api/video/complete processes video completion with $0.25 earnings, validates minimum 30-second watch duration, enforces daily limit of 10 videos."
 
   - task: "Click earning system"
     implemented: true
@@ -149,6 +185,24 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: Click processing endpoint properly secured with authentication, business logic structure in place for daily limits and earnings."
+      - working: true
+        agent: "testing"
+        comment: "✅ RE-TESTED: POST /api/click processes clicks correctly with $0.50 earnings, enforces daily limit of 20 clicks, updates user balance and statistics properly."
+
+  - task: "Dashboard with Video Statistics"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Dashboard atualizado para incluir estatísticas de vídeos além dos cliques"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/dashboard returns complete statistics including clicks_today, videos_today, clicks_remaining (20), videos_remaining (10), balance, total_earned, and recent activity."
 
   - task: "PayPal withdrawal integration"
     implemented: true
@@ -164,6 +218,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: Withdrawal endpoints working correctly, proper authentication required, minimum balance validation structure in place. PayPal integration ready for implementation."
+      - working: true
+        agent: "testing"
+        comment: "✅ RE-TESTED: POST /api/withdraw validates minimum $10 withdrawal, checks sufficient balance, GET /api/withdraw-history returns withdrawal history. Both endpoints properly secured with authentication."
 
 frontend:
   - task: "React app with Tailwind UI"
@@ -205,7 +262,7 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: false
 
 test_plan:
@@ -219,3 +276,5 @@ agent_communication:
     message: "Implementei o ClickEarn Pro básico com todas as funcionalidades principais. Preciso testar o backend para verificar se as rotas estão funcionando corretamente, especialmente autenticação, cliques e saques."
   - agent: "testing"
     message: "✅ BACKEND TESTING COMPLETE: All 4 backend tasks tested successfully. Fixed missing httpx dependency. All API endpoints working correctly with proper authentication, MongoDB connection functional, business logic in place. Backend is ready for production use."
+  - agent: "testing"
+    message: "✅ COMPREHENSIVE TESTING COMPLETE: Tested all new functionalities requested by user. All 20 backend tests passed (100% success rate). Fixed Pydantic validator issue in registration. System fully functional with: Multiple Authentication (email/phone + SMS verification), Video Advertising System ($0.25/video, 10 daily limit), Updated Click System ($0.50/click, 20 daily limit), Dashboard with video statistics, Withdrawal system with validation. All API endpoints working correctly with proper authentication and business logic."
