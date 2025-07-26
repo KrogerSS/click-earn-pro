@@ -38,17 +38,13 @@ class ClickEarnTester:
     def test_health_check(self):
         """Test basic health check endpoint"""
         try:
-            response = requests.get(f"{BACKEND_URL}/", timeout=10)
+            # The root URL serves frontend, so we test if backend is accessible via API routes
+            response = requests.get(f"{API_BASE}/content", timeout=10)
             if response.status_code == 200:
-                data = response.json()
-                if data.get("message") == "ClickEarn Pro API" and data.get("status") == "running":
-                    self.log_test("Health Check", True, "Server is running correctly")
-                    return True
-                else:
-                    self.log_test("Health Check", False, f"Unexpected response: {data}")
-                    return False
+                self.log_test("Health Check", True, "Backend API is accessible and responding")
+                return True
             else:
-                self.log_test("Health Check", False, f"HTTP {response.status_code}: {response.text}")
+                self.log_test("Health Check", False, f"Backend API not accessible: HTTP {response.status_code}")
                 return False
         except Exception as e:
             self.log_test("Health Check", False, f"Connection error: {str(e)}")
