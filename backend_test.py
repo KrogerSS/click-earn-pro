@@ -362,6 +362,7 @@ class ClickEarnTester:
         except Exception as e:
             self.log_test("Daily Limits", False, f"Request error: {str(e)}")
             return False
+    def test_health_check(self):
         """Test basic health check endpoint"""
         try:
             # The root URL serves frontend, so we test if backend is accessible via API routes
