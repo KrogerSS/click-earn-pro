@@ -655,6 +655,7 @@ class ClickEarnTester:
             ("Daily Limits Check", self.test_daily_limits),
             
             # 9. Test withdrawal system
+            ("Withdrawal with Auth", self.test_withdrawal_with_auth),
             ("Withdrawal System Structure", self.test_withdrawal_system_structure),
             
             # 10. Test additional authentication methods
