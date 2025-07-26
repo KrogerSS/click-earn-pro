@@ -107,15 +107,18 @@ user_problem_statement: "Criar um aplicativo híbrido ClickEarn Pro com sistema 
 backend:
   - task: "FastAPI server setup with MongoDB"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Criado servidor FastAPI com conexão MongoDB, rotas de autenticação, dashboard, cliques e saques"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Server running successfully on port 8001, MongoDB connection functional, all API routes accessible. Fixed missing httpx dependency."
 
   - task: "Emergent Auth integration"
     implemented: true
